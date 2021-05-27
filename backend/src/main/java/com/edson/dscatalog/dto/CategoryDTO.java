@@ -1,11 +1,13 @@
 package com.edson.dscatalog.dto;
 
 import com.edson.dscatalog.entities.Category;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CategoryDTO implements Serializable {
     private static final long SerialVersionUID = 1L;
 
@@ -16,4 +18,6 @@ public class CategoryDTO implements Serializable {
         this.id = entity.getId();
         this.name = entity.getName();
     }
+
+
 }
