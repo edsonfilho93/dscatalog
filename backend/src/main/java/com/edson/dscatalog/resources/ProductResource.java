@@ -1,6 +1,8 @@
 package com.edson.dscatalog.resources;
 
+import com.edson.dscatalog.dto.CategoryDTO;
 import com.edson.dscatalog.dto.ProductDTO;
+import com.edson.dscatalog.entities.Product;
 import com.edson.dscatalog.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,11 +39,23 @@ public class ProductResource {
         return ResponseEntity.ok().body(dto);
     }
 
-//    @PostMapping
-//    public ResponseEntity<Void> insert(@RequestBody ProductDTO dto) {
-//        dto = service.insert(dto);
-//        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
-//        return ResponseEntity.created(uri).body(dto);
-//    }
+    @PostMapping
+    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
+        dto = service.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
+        dto = service.update(id, dto);
+        return ResponseEntity.ok().body(dto);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
