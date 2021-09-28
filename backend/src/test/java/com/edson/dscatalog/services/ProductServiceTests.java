@@ -1,6 +1,7 @@
 package com.edson.dscatalog.services;
 
 import com.edson.dscatalog.repositories.ProductRepository;
+import com.edson.dscatalog.services.exceptions.DatabaseException;
 import com.edson.dscatalog.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,8 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 public class ProductServiceTests {
@@ -24,13 +27,22 @@ public class ProductServiceTests {
 
     private Long nonExistingId;
 
+    private Long dependentId;
+
     @BeforeEach
     private void setUp() throws Exception {
         this.existingId = 1L;
         this.nonExistingId = 2L;
+        this.dependentId = 3L;
 
-        Mockito.doNothing().when(repository).deleteById(existingId);
-        Mockito.doThrow(ResourceNotFoundException.class).when(repository).deleteById(nonExistingId);
+        doNothing().when(repository).deleteById(existingId);
+
+        doThrow(ResourceNotFoundException.class)
+                .when(repository).deleteById(nonExistingId);
+
+        doThrow(DataIntegrityViolationException.class)
+                .when(repository).deleteById(dependentId);
+
     }
 
     @Test
@@ -39,9 +51,8 @@ public class ProductServiceTests {
             service.delete(existingId);
         });
 
-        Mockito.verify(repository).deleteById(existingId);
-
-        Mockito.doNothing().when(repository).deleteById(existingId);
+        verify(repository).deleteById(existingId);
+        doNothing().when(repository).deleteById(existingId);
     }
 
     @Test
@@ -50,8 +61,19 @@ public class ProductServiceTests {
             service.delete(nonExistingId);
         });
 
-        Mockito.verify(repository).deleteById(nonExistingId);
-        Mockito.doThrow(ResourceNotFoundException.class)
+        verify(repository).deleteById(nonExistingId);
+        doThrow(ResourceNotFoundException.class)
                 .when(repository).deleteById(nonExistingId);
+    }
+
+    @Test
+    public void deleteShouldThrowsExceptionsWhenDependentId() {
+        Assertions.assertThrows(DatabaseException.class, () -> {
+            service.delete(dependentId);
+        });
+
+        verify(repository).deleteById(dependentId);
+        doThrow(DatabaseException.class)
+                .when(repository).deleteById(dependentId);
     }
 }

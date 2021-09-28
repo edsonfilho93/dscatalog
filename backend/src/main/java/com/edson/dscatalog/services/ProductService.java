@@ -35,7 +35,8 @@ public class ProductService {
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
         Optional<Product> obj = repository.findById(id);
-        Product entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Entidade não encontrada"));
+        Product entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Entidade não encontrada"));
         return new ProductDTO(entity, entity.getCategories());
     }
 
@@ -65,7 +66,6 @@ public class ProductService {
             throw new DatabaseException("Violação de Integridade do BD");
         }
     }
-
 
     private void copyDtoToEntity(Product entity, ProductDTO dto) {
         entity.setName(dto.getName());
