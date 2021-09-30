@@ -69,6 +69,10 @@ public class ProductServiceTests {
     }
 
     @Test
+    public void findAllShouldThrowResourceNotFoundExceptionWhenIdNonExists() {
+    }
+
+    @Test
     public void findAllPagedShouldReturnPage() {
         Pageable pageable = PageRequest.of(0, 10);
 
