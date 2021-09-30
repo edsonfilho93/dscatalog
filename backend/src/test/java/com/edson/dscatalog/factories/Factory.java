@@ -1,5 +1,6 @@
 package com.edson.dscatalog.factories;
 
+import com.edson.dscatalog.dto.ProductDTO;
 import com.edson.dscatalog.entities.Category;
 import com.edson.dscatalog.entities.Product;
 
@@ -16,6 +17,10 @@ public class Factory {
         Product product = new Product(1L, "Phone", "Good Phone", 800.0, "https://img.com/img.png", Instant.parse("2020-09-17T03:00:00Z"));
         product.getCategories().add(createCategory());
         return product;
+    }
+
+    public static void createProductDTO() {
+        
     }
 
     public static Category createCategory() {
