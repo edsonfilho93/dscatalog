@@ -19,8 +19,12 @@ public class Factory {
         return product;
     }
 
-    public static void createProductDTO() {
-        
+    public static ProductDTO createProductDTO() {
+        return new ProductDTO(createProduct());
+    }
+
+    public static ProductDTO createProductDTOWithIdNull() {
+        return new ProductDTO(createProductWithIdNull());
     }
 
     public static Category createCategory() {

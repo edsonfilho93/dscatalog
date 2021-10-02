@@ -1,5 +1,6 @@
 package com.edson.dscatalog.services;
 
+import com.edson.dscatalog.dto.ProductDTO;
 import com.edson.dscatalog.entities.Product;
 import com.edson.dscatalog.factories.Factory;
 import com.edson.dscatalog.repositories.ProductRepository;
@@ -41,6 +42,8 @@ public class ProductServiceTests {
 
     private Product product;
 
+    private ProductDTO productDTO;
+
     private PageImpl<Product> page;
 
     @BeforeEach
@@ -48,9 +51,9 @@ public class ProductServiceTests {
         this.existingId = 1L;
         this.nonExistingId = 2L;
         this.dependentId = 3L;
-        product = Factory.createProduct();
-
-        page = new PageImpl<>(of(product));
+        this.product = Factory.createProduct();
+        this.productDTO = Factory.createProductDTOWithIdNull();
+        this.page = new PageImpl<>(of(product));
 
         doNothing().when(repository).deleteById(existingId);
         doThrow(ResourceNotFoundException.class).when(repository).deleteById(nonExistingId);
@@ -60,16 +63,35 @@ public class ProductServiceTests {
         when(repository.save(any())).thenReturn(product);
         when(repository.findById(existingId)).thenReturn(Optional.of(product));
         when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
+
+        when(repository.getOne(existingId)).thenReturn(product);
+        doThrow(ResourceNotFoundException.class).when(repository).getOne(nonExistingId);
+
+
     }
 
     @Test
-    public void findAllShouldReturnProductWhenIdExists() {
+    public void updateShouldReturnProductDTOWhenIdExists() {
+        assertDoesNotThrow(() -> service.update(existingId, productDTO));
+        assertEquals(service.update(existingId, productDTO).getClass(), ProductDTO.class);
+        verify(repository, times(2)).getOne(existingId);
+    }
+
+    @Test
+    public void updateShouldThrowsResourceNotFoundExceptionWhenIdNotExists() {
+        assertThrows(ResourceNotFoundException.class, () -> service.update(nonExistingId, productDTO));
+    }
+
+    @Test
+    public void findByIdShouldReturnProductWhenIdExists() {
         assertDoesNotThrow(() -> service.findById(existingId));
+        assertEquals(service.findById(existingId).getClass(), ProductDTO.class);
         verify(repository, times(2)).findById(existingId);
     }
 
     @Test
-    public void findAllShouldThrowResourceNotFoundExceptionWhenIdNonExists() {
+    public void findByIdShouldThrowsResourceNotFoundExceptionWhenIdNotExists() {
+        assertThrows(ResourceNotFoundException.class, () -> service.findById(nonExistingId));
     }
 
     @Test
