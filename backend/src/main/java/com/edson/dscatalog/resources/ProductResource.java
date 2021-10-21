@@ -1,14 +1,10 @@
 package com.edson.dscatalog.resources;
 
-import com.edson.dscatalog.dto.CategoryDTO;
 import com.edson.dscatalog.dto.ProductDTO;
-import com.edson.dscatalog.entities.Product;
 import com.edson.dscatalog.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
