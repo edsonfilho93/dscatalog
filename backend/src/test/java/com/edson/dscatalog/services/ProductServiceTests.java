@@ -35,15 +35,10 @@ public class ProductServiceTests {
     private ProductRepository repository;
 
     private Long existingId;
-
     private Long nonExistingId;
-
     private Long dependentId;
-
     private Product product;
-
     private ProductDTO productDTO;
-
     private PageImpl<Product> page;
 
     @BeforeEach
