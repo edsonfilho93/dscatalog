@@ -1,6 +1,7 @@
-package com.edson.dscatalog.services;
+package com.edson.dscatalog.services.integration;
 
 import com.edson.dscatalog.repositories.ProductRepository;
+import com.edson.dscatalog.services.ProductService;
 import com.edson.dscatalog.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,7 @@ public class ProductServiceIntegrationTests {
     }
 
     @Test
-    public void findAllPagaedShouldReturnSortedPageWhenSortByName() {
+    public void findAllPagedShouldReturnSortedPageWhenSortByName() {
         var result = service.findAll(of(0, 10, by("Name")));
 
         assertFalse(result.isEmpty());
@@ -77,5 +78,4 @@ public class ProductServiceIntegrationTests {
         assertEquals(secondElement, result.getContent().get(1).getName());
         assertEquals(thirdElement, result.getContent().get(2).getName());
     }
-
 }
