@@ -1,13 +1,10 @@
-import NavBar from 'components/NavBar';
-import './assets/styles/custom.scss';
-import './App.css';
+import "./assets/styles/custom.scss";
+import "./App.css";
+import Home from "pages/Home";
 
 function App() {
   return (
-    <>
-      <NavBar />
-      <h1>Hello DSCatalog!</h1>
-    </>
+  <Home />
   );
 }
 
