@@ -6,6 +6,7 @@ function App() {
   return (
     <>
       <NavBar />
+      
       <h1>Hello DSCatalog!</h1>
     </>
   );
