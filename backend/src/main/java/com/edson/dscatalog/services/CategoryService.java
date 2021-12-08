@@ -53,13 +53,12 @@ public class CategoryService {
         }
     }
 
-    @Transactional
     public void delete(Long id) {
         try {
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("id não encontrado:".concat(String.valueOf(id)));
-        } catch (DataIntegrityViolationException e2) {
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Violação de Integridade do BD");
         }
     }
