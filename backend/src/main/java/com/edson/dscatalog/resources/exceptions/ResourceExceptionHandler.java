@@ -49,7 +49,7 @@ public class ResourceExceptionHandler {
         e.getBindingResult().getFieldErrors().forEach(error ->
                 err.addError(error.getField(), error.getDefaultMessage()));
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
     }
 
 }
